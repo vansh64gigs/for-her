@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Favorite Person</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #FBEFEA;
+    --paper-deep: #F3E1D8;
+    --wine: #6B2233;
+    --rose: #C97B84;
+    --gold: #B8935A;
+    --ink: #3A2E2E;
+    --spotify: #1DB954;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{
+    scroll-behavior: smooth;
+  }
+
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+  }
+
+  ::selection{ background: var(--rose); color: var(--paper); }
+
+  /* subtle paper grain */
+  body::before{
+    content:"";
+    position: fixed; inset:0;
+    pointer-events:none;
+    background-image: radial-gradient(rgba(107,34,51,0.035) 1px, transparent 1px);
+    background-size: 3px 3px;
+    z-index: 1;
+  }
+
+  section{
+    position: relative;
+    min-height: 100vh;
+    padding: 6rem 1.5rem;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+
+  .eyebrow{
+    font-family:'Poppins', sans-serif;
+    font-size:0.72rem;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+    color: var(--rose);
+    font-weight:500;
+    margin-bottom: 1.4rem;
+  }
+
+  h1,h2{ font-family:'Cormorant Garamond', serif; color: var(--wine); font-weight:500; }
+
+  /* ---------- HERO ---------- */
+  .hero{ gap: 1.2rem; }
+
+  .stamp{
+    width: 84px; height:84px;
+    border-radius:50%;
+    border: 2px dashed var(--gold);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    font-family:'Poppins', sans-serif;
+    color: var(--gold);
+    letter-spacing:0.1em;
+    font-size:0.62rem;
+    margin-bottom: 1.6rem;
+    transform: rotate(-8deg);
+  }
+  .stamp b{ font-size:1.05rem; color:var(--wine); letter-spacing:0.05em; }
+
+  .hero h1{
+    font-size: clamp(2.6rem, 8vw, 4.6rem);
+    line-height: 1.05;
+    max-width: 16ch;
+  }
+  .hero .script{
+    font-family:'Caveat', cursive;
+    color: var(--rose);
+    font-size: 1.15em;
+    font-weight:600;
+  }
+
+  .hero p.sub{
+    font-family:'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--ink);
+    opacity:0.75;
+    max-width: 34ch;
+    margin-top: 0.6rem;
+  }
+
+  .heart{
+    position:absolute; opacity:0.55; color: var(--rose);
+    animation: float 9s ease-in-out infinite;
+    font-size: 1.4rem;
+    z-index:0;
+  }
+  @keyframes float{
+    0%,100%{ transform: translateY(0) rotate(0deg); }
+    50%{ transform: translateY(-26px) rotate(8deg); }
+  }
+
+  .scrollcue{
+    margin-top: 3rem;
+    font-size:0.75rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color: var(--wine);
+    opacity:0.6;
+    display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+    animation: bob 2.2s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%,100%{ transform: translateY(0); }
+    50%{ transform: translateY(8px); }
+  }
+
+  /* ---------- SECTION HEADS ---------- */
+  .section-head{ margin-bottom: 3rem; }
+  .section-head h2{ font-size: clamp(2rem, 5vw, 2.8rem); }
+  .section-head p{
+    font-family:'Cormorant Garamond', serif; font-style: italic;
+    color: var(--rose); font-size:1.05rem; margin-top:0.4rem;
+  }
+
+  /* ---------- MOMENTS / GALLERY ---------- */
+  .gallery-wrap{ width:100%; }
+  .gallery{
+    display:flex;
+    gap: 1.8rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 2rem 8vw 2.5rem 8vw;
+    -webkit-overflow-scrolling: touch;
+  }
+  .gallery::-webkit-scrollbar{ height:6px; }
+  .gallery::-webkit-scrollbar-thumb{ background: var(--rose); border-radius:10px; }
+  .gallery::-webkit-scrollbar-track{ background: transparent; }
+
+  .polaroid{
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+    background: #fff;
+    padding: 0.9rem 0.9rem 1.4rem 0.9rem;
+    width: 240px;
+    box-shadow: 0 14px 30px rgba(107,34,51,0.14);
+    border-radius: 3px;
+    transition: transform 0.35s ease;
+    opacity:0; transform: translateY(40px);
+  }
+  .polaroid.visible{ opacity:1; transform: translateY(0); }
+  .polaroid:nth-child(odd){ transform: translateY(40px) rotate(-3deg); }
+  .polaroid:nth-child(even){ transform: translateY(40px) rotate(3deg); }
+  .polaroid.visible:nth-child(odd){ transform: rotate(-3deg); }
+  .polaroid.visible:nth-child(even){ transform: rotate(3deg); }
+  .polaroid:hover{ transform: translateY(-8px) rotate(0deg) !important; }
+
+  .polaroid .frame{
+    width:100%; aspect-ratio: 1/1.05;
+    background: linear-gradient(135deg, var(--paper-deep), #e9c9c2);
+    border-radius:2px;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+    position: relative;
+  }
+  .polaroid img{
+    position:absolute; inset:0;
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
+  .polaroid .frame .ph-icon{ font-size:1.8rem; color: var(--rose); opacity:0.6; display:none; }
+  .polaroid .frame .ph-icon.show{ display:block; }
+  .polaroid .frame.qr-frame{ background: #fff; padding: 1rem; }
+  .polaroid .frame.qr-frame img{ object-fit: contain; }
+  .polaroid figcaption{
+    font-family:'Caveat', cursive;
+    font-size:1.15rem;
+    color: var(--wine);
+    margin-top:0.7rem;
+  }
+
+  .swipe-hint{
+    font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;
+    color: var(--rose); opacity:0.65;
+  }
+
+  /* ---------- LETTER ---------- */
+  .letter-section{ padding-top: 4rem; }
+  .envelope{
+    width: min(360px, 82vw);
+    cursor:pointer;
+    position:relative;
+    user-select:none;
+  }
+  .envelope-body{
+    background: var(--wine);
+    height: 190px;
+    border-radius: 6px;
+    position:relative;
+    box-shadow: 0 20px 40px rgba(107,34,51,0.25);
+    overflow:hidden;
+  }
+  .envelope-body::before, .envelope-body::after{
+    content:"";
+    position:absolute; top:0; width:0; height:0;
+  }
+  .flap{
+    position:absolute; top:0; left:0; width:100%; height:100%;
+    background: #7d2a3d;
+    clip-path: polygon(0 0, 50% 55%, 100% 0);
+    transition: transform 0.6s cubic-bezier(.6,.2,.2,1);
+    transform-origin: top;
+  }
+  .envelope.open .flap{ transform: rotateX(180deg); }
+
+  .seal{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:52px; height:52px; border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, #d79a45, var(--gold));
+    display:flex; align-items:center; justify-content:center;
+    color:#fff8ee; font-size:1.3rem; z-index:2;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+    transition: transform 0.3s ease;
+  }
+  .envelope.open .seal{ transform: translate(-50%,-50%) scale(0); }
+
+  .tap-label{
+    margin-top:1.1rem;
+    font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase;
+    color: var(--rose); text-align:center;
+  }
+
+  .letter-paper{
+    background:#fffaf5;
+    max-width: 460px;
+    width: min(460px, 88vw);
+    margin-top: 2.2rem;
+    border-radius: 4px;
+    padding: 2.6rem 2.2rem;
+    box-shadow: 0 24px 50px rgba(107,34,51,0.18);
+    text-align:left;
+    max-height:0;
+    opacity:0;
+    overflow:hidden;
+    transition: max-height 0.8s ease, opacity 0.6s ease, padding 0.6s ease, margin 0.6s ease;
+  }
+  .letter-paper.show{
+    max-height: 900px; opacity:1;
+  }
+  .letter-paper .greet{ font-family:'Caveat', cursive; font-size:1.9rem; color:var(--wine); }
+  .letter-paper p{
+    font-family:'Cormorant Garamond', serif; font-style:italic;
+    font-size:1.12rem; line-height:1.75; color: var(--ink); margin-top:1.1rem;
+  }
+  .letter-paper .sign{
+    font-family:'Caveat', cursive; font-size:1.6rem; color:var(--wine);
+    margin-top:1.6rem; text-align:right;
+  }
+
+  /* ---------- SONG ---------- */
+  .song-card{
+    background: #10201a;
+    border-radius: 18px;
+    width: min(420px, 88vw);
+    padding: 1.9rem 1.7rem;
+    box-shadow: 0 24px 50px rgba(0,0,0,0.3);
+    color: #eafbee;
+  }
+  .song-card .tag{
+    display:flex; align-items:center; gap:0.5rem;
+    font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase;
+    color: var(--spotify); margin-bottom:1.2rem;
+  }
+  .song-card .tag svg{ width:16px; height:16px; fill: var(--spotify); }
+  .song-card iframe{ border-radius: 12px; }
+  .song-caption{
+    font-family:'Cormorant Garamond', serif; font-style:italic;
+    color: var(--rose); margin-top:1.6rem; max-width:32ch;
+  }
+
+  footer{
+    padding: 3.5rem 1.5rem 4rem;
+    text-align:center;
+    font-family:'Caveat', cursive;
+    font-size:1.4rem;
+    color: var(--wine);
+  }
+
+  @media (max-width:480px){
+    .polaroid{ width: 200px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <span class="heart" style="top:12%; left:12%;">♥</span>
+  <span class="heart" style="top:22%; right:14%; animation-delay:2s;">♥</span>
+  <span class="heart" style="bottom:18%; left:20%; animation-delay:4s;">♥</span>
+
+  <div class="stamp">GIRLFRIEND'S<br><b>01 · 08</b></div>
+  <div class="eyebrow">Happy Girlfriend's Day</div>
+  <h1>For <span class="script">Shivanshi</span>,<br>my favorite person</h1>
+  <p class="sub">A little corner of the internet made just for you.</p>
+  <div class="scrollcue">Scroll down ↓</div>
+</section>
+
+<!-- ============ MOMENTS ============ -->
+<section id="moments">
+  <div class="section-head">
+    <h2>A Few of My Favorite Moments</h2>
+    <p>with you, and only you</p>
+  </div>
+  <div class="gallery-wrap">
+    <div class="gallery" id="gallery">
+      <!-- Replace src="" on each <img> below with your own photo (a file path or an image URL). -->
+      <figure class="polaroid"><div class="frame"><img src="C:\Users\vansh\Downloads\day we met.jpeg" alt="memory 1" onerror="this.style.display='none'; this.nextElementSibling.classList.add('show')"><span class="ph-icon">✦ add photo</span></div><figcaption>the day we met</figcaption></figure>
+      <figure class="polaroid"><div class="frame"><img src="C:\Users\vansh\Downloads\trip.jpeg" alt="memory 2" onerror="this.style.display='none'; this.nextElementSibling.classList.add('show')"><span class="ph-icon">✦ add photo</span></div><figcaption>our first trip</figcaption></figure>
+      <figure class="polaroid"><div class="frame"><img src="C:\Users\vansh\Downloads\random tuesday.jpeg" alt="memory 3" onerror="this.style.display='none'; this.nextElementSibling.classList.add('show')"><span class="ph-icon">✦ add photo</span></div><figcaption>that random tuesday</figcaption></figure>
+      <!-- QR polaroid: replace src="" with a QR code image that links to your secret video -->
+      <figure class="polaroid"><div class="frame qr-frame"><img src="C:\Users\vansh\Downloads\qrcode (8).png" alt="scan me" onerror="this.style.display='none'; this.nextElementSibling.classList.add('show')"><span class="ph-icon">▦ add QR code</span></div><figcaption>scan for a secret video 👀</figcaption></figure>
+      <figure class="polaroid"><div class="frame"><img src="C:\Users\vansh\Downloads\us always.jpeg" alt="memory 5" onerror="this.style.display='none'; this.nextElementSibling.classList.add('show')"><span class="ph-icon">✦ add photo</span></div><figcaption>us, always</figcaption></figure>
+    </div>
+  </div>
+  <div class="swipe-hint">← swipe through us →</div>
+</section>
+
+<!-- ============ LETTER ============ -->
+<section class="letter-section">
+  <div class="section-head">
+    <h2>A Little Letter</h2>
+    <p>tap the seal to open it</p>
+  </div>
+
+  <div class="envelope" id="envelope" onclick="toggleLetter()">
+    <div class="envelope-body">
+      <div class="flap"></div>
+      <div class="seal">♥</div>
+    </div>
+  </div>
+  <div class="tap-label">tap to open</div>
+
+  <div class="letter-paper" id="letterPaper">
+    <div class="greet">My cutu,</div>
+    <p>
+      I want to tell you that I love you soo much. This letter and website won't be much,
+      but I want to say I love you more than anything — your cutest smile, the dimple you have,
+      the adorable eyes, all I can do is just melt. I sometimes get emotional thinking about you,
+      watching your highlights on Instagram makes me think where was I when you wore that outfit,
+      had that lunch, or studied all night for the exam.
+    </p>
+    <p>
+      I want to tell you that you are the sweetest and prettiest girl I know. Your voice makes me
+      soo calm, those cute little sounds you make while you sleep are what make me study more at
+      night. I love you bacha, my cutest!!
+    </p>
+    <div class="sign">— always yours, Vansh</div>
+  </div>
+</section>
+
+<!-- ============ SONG ============ -->
+<section id="song">
+  <div class="section-head">
+    <h2>Our Song</h2>
+    <p>press play, and think of me</p>
+  </div>
+
+  <div class="song-card">
+    <div class="tag">
+      <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.52 17.34c-.24.36-.66.48-1.02.24-2.82-1.74-6.36-2.1-10.56-1.14-.42.12-.78-.18-.9-.54-.12-.42.18-.78.54-.9 4.56-1.02 8.52-.6 11.64 1.32.42.18.48.66.3 1.02zm1.44-3.3c-.3.42-.84.6-1.26.3-3.24-1.98-8.16-2.58-11.94-1.38-.48.12-1.02-.12-1.14-.6-.12-.48.12-1.02.6-1.14 4.38-1.32 9.78-.66 13.5 1.62.36.18.54.78.24 1.2zm.12-3.42C15.3 8.4 8.94 8.16 5.28 9.3c-.6.18-1.2-.18-1.38-.72-.18-.6.18-1.2.72-1.38 4.2-1.26 11.16-1.02 15.54 1.62.54.3.72 1.02.42 1.56-.3.48-1.02.66-1.5.36z"/></svg>
+      the soundtrack to us
+    </div>
+    <!-- Replace TRACK_ID below with your song's Spotify track ID (find it in the song's share link) -->
+    <iframe src="https://open.spotify.com/embed/track/3hEfpBHxgieRLz4t3kLNEg?utm_source=generator"
+      width="100%" height="152" frameborder="0"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy"></iframe>
+    <p class="song-caption">Every time this plays, I think of you.</p>
+  </div>
+</section>
+
+<footer>Happy Girlfriend's Day, Shivanshi 🤍</footer>
+
+<script>
+  function toggleLetter(){
+    document.getElementById('envelope').classList.toggle('open');
+    document.getElementById('letterPaper').classList.toggle('show');
+  }
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.25 });
+
+  document.querySelectorAll('.polaroid').forEach(el=> io.observe(el));
+</script>
+
+</body>
+</html>
